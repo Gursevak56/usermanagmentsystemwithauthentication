@@ -9,7 +9,8 @@ app.use(session({
     resave:false
 }))
 const bodyparser = require('body-parser');
-app.use(bodyparser.urlencoded({extended:true}));
+app.use(bodyparser.urlencoded({extended:true,limit:'50mb'}));
+app.use(express.json());
 const ejs = require('ejs');
 //Database connectivity
 mongoose.connect('mongodb://127.0.0.1:27017/user-managment-system',{useNewUrlParser:true}).then(result =>{

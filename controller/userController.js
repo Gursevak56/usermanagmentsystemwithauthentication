@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const session =require('express-session');
+const random =require('randomstring');
 const registration = async (req,res)=>{
     try {
         res.render('./../views/users/registeration.ejs');
@@ -34,7 +35,7 @@ const inserdata=async (req,res)=>{
         })
         const userdata = await users.save();
         if(userdata){
-            sendVerifyEmail(userdata.name,userdata.email,userdata._id);
+            sendVerifyEmail.verifemail(userdata.name,userdata.email,userdata._id);
             res.render('./../views/users/registeration.ejs',{message:'Your registeration is successfull,please verify your email'});
            
         }
@@ -112,6 +113,55 @@ const home =async (req,res)=>
 {
     res.render('./../views/users/home.ejs');
 }
+const forgetpassword = async (req,res)=>{
+    res.render('./../views/users/forget.ejs');
+}
+const resetlink = async (req,res)=>{
+    try {
+        let checkmail = await User.findOne({email:req.body.email});
+        if(!checkmail){
+            console.log('invaild email');
+        }
+        const token = await random.generate();
+        const update =await User.findByIdAndUpdate({_id:checkmail._id},{$set:{randomstring:token}});
+       const reset=await sendVerifyEmail.sendResetEmail(checkmail.name,checkmail.email,token)
+       if(!reset){
+        console.log('This is error for your configuration');
+       }
+       else{
+        console.log('verification email send successfully');
+       }
+;    } catch (error) {
+        console.log(error);
+    }
+}
+const resetpassword = async (req,res)=>{
+    try {
+        const token = await User.findOne({randomstring:req.query.token});
+        if(token){
+            res.render('./../views/users/resetpassword.ejs',{user_id:token._id});
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+const updatepassword=async (req,res)=>{
+    console.log(req.body);
+    try {
+        console.log(req.body.user_id);
+        const checkuser = await User.findOne({_id:req.body.user_id});
+        console.log(checkuser)
+        const password = await sercurepassword(req.body.password);
+    if(!checkuser){
+        console.log('invaild user');
+    }
+    const update = await User.findByIdAndUpdate({_id:checkuser._id},{$set:{password:password}});
+    console.log('password has been changed');
+    } catch (error) {
+        console.log('error');
+    }
+}
 module.exports = {
     registration,
     inserdata,
@@ -119,5 +169,9 @@ module.exports = {
     loginLoad,
     loginverify,
     userlogout,
-    home
+    home,
+    forgetpassword,
+    resetlink,
+    resetpassword,
+    updatepassword
 }

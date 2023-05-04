@@ -26,4 +26,8 @@ route.get('/home',auth.islogin,userController.home);
 route.get('/empty',(req,res)=>{
     console.log('route');
 })
+route.get('/forget',auth.islogut,userController.forgetpassword);
+route.post('/forget',auth.islogut,userController.resetlink);
+route.get('/forget-password',auth.islogut,userController.resetpassword);
+route.post('/upadatepassword',userController.updatepassword);
 module.exports=route; 

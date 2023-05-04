@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const userSchema = mongoose.Schema({
+const userSchema =new mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -28,6 +28,12 @@ const userSchema = mongoose.Schema({
         type:Number,
         required:true,
         default:0
+    },
+    jwtToken:{
+        type:String,
+    },
+    randomstring:{
+        type:String
     }
 })
 const User = new mongoose.model("user",userSchema);

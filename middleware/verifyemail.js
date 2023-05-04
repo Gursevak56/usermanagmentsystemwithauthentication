@@ -26,4 +26,30 @@ transporter.sendMail(mailOption,(error,value)=>{
     }
 })
 }
-module.exports = verifemail;
+//reset password
+const sendResetEmail =async (name,email,token)=>{
+    const transporter = nodemailer.createTransport({
+        service:'gmail',
+        port:567,
+        secure:false,
+        auth:{
+            user:'gursevaksinghgill21@gmail.com',
+            pass:'grlnlcnykxqdbjad'
+        }
+    })
+    const mailOption ={
+        from:'gursevaksinghgill21@gmail.com',
+        to:email,
+        subject:'Password Reset',
+        html:'<p> hii '+name+' click on <a href ="http://127.0.0.1:3000/forget-password?token='+token+'">Verify</a></p>'
+    }
+    transporter.sendMail(mailOption,(error,value)=>{
+        if(error){
+            console.log(error);
+        }
+        else{
+            console.log(value);
+        }
+    })
+    }
+module.exports = {verifemail,sendResetEmail};
