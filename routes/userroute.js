@@ -30,4 +30,8 @@ route.get('/forget',auth.islogut,userController.forgetpassword);
 route.post('/forget',auth.islogut,userController.resetlink);
 route.get('/forget-password',auth.islogut,userController.resetpassword);
 route.post('/upadatepassword',userController.updatepassword);
+route.get('/verification',auth.islogut,userController.verificationload);
+route.post('/verfication',auth.islogut,userController.sendverificaionmail);
+route.get('/edit',auth.islogin,userController.editload);
+route.post('/edituser',auth.islogin,userController.updateuser);
 module.exports=route; 

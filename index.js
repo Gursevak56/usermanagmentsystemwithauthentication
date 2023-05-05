@@ -1,8 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const route = require('./routes/userroute');
+const userroute = require('./routes/userroute');
+const adminroute =require('./routes/adminroute');
 const session = require('express-session');
 const app = express();
+app.use(express.static('public'));
 app.use(session({
     secret:'Gursevaksingh',
     saveUninitialized:false,
@@ -18,7 +20,10 @@ mongoose.connect('mongodb://127.0.0.1:27017/user-managment-system',{useNewUrlPar
         console.log('database connected successfully');
     }
 });
-app.use('/',route);
+//user routes
+app.use('/',userroute);
+//admin routes
+app.use('/admin',adminroute.route);
 app.set('view engine','ejs');
 app.listen(3000,()=>{
     console.log('server starts on port 3000');

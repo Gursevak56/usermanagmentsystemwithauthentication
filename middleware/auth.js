@@ -1,5 +1,6 @@
 const islogin =async (req,res,next)=>{
     try {
+        console.log(req.session.User_Id);
         if(req.session.User_Id){}
         else{
             res.redirect('/empty');

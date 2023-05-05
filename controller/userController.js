@@ -61,7 +61,7 @@ const loginLoad = async (req,res)=>{
 const loginverify =async (req,res)=>{
     try {
         try {
-            console.log(req.body)
+        console.log(req.body)
         const checkemail = await User.findOne({email:req.body.email});
         console.log(checkemail);
         console.log(req.body.password);
@@ -73,6 +73,7 @@ const loginverify =async (req,res)=>{
             }
             else{
                 const token = await jwt.sign({_id:checkemail._id},'Gursevak');
+                res.header('x-access-token',token);
                 const update =await User.findByIdAndUpdate({_id:checkemail._id},{$set:{jwtToken:token}});
                 if(!update){
                     console.log('this is error in generation token');
@@ -111,7 +112,10 @@ res.redirect('/signup');
 }
 const home =async (req,res)=>
 {
-    res.render('./../views/users/home.ejs');
+    const user_id =req.session.User_Id;
+        const userdata = await User.findOne({_id:user_id});
+    console.log(userdata)
+    res.render('./../views/users/home.ejs',{user:userdata});
 }
 const forgetpassword = async (req,res)=>{
     res.render('./../views/users/forget.ejs');
@@ -149,9 +153,7 @@ const resetpassword = async (req,res)=>{
 const updatepassword=async (req,res)=>{
     console.log(req.body);
     try {
-        console.log(req.body.user_id);
         const checkuser = await User.findOne({_id:req.body.user_id});
-        console.log(checkuser)
         const password = await sercurepassword(req.body.password);
     if(!checkuser){
         console.log('invaild user');
@@ -162,6 +164,53 @@ const updatepassword=async (req,res)=>{
         console.log('error');
     }
 }
+const verificationload = async (req,res)=>{
+    res.render('./../views/users/verification.ejs');
+}
+const sendverificaionmail = async (req,res)=>{
+    try {
+        const email = req.body.email;
+        let usercheck = await User.findOne({email:email});
+        if(!usercheck){
+            console.log('user is not registered'); 
+        }
+        const verifiedmaill = await sendVerifyEmail.verifemail(usercheck.name,usercheck.email,usercheck._id);
+        if(verifiedmaill){
+            console.log('email verified successfully');
+        }
+    } catch (error) {
+        
+    }
+}
+const editload =async (req,res)=>{
+    try {
+        const user_id= req.query.id;
+        const userdata =await User.findOne({_id:user_id});
+        if(!userdata){
+            res.send("user not found");
+        }
+        const tokenid = req.session.User_Id;
+        const tokendata = await User.findOne({_id:tokenid});
+        res.render('./../views/users/edituser.ejs',{token:tokendata.jwtToken});
+    } catch (error) {
+        
+    }
+}
+const updateuser = async (req,res)=>{
+    console.log(req.body.email)
+    const mail =await User.findOne({email:req.body.email});
+    if(!mail){
+        console.log('email incorrect please provied vaild email id');
+    }
+    const token = req.body.token;
+    const istoken = jwt.verify(token,'Gursevak');
+    if(!istoken){
+        console.log('token has been expeired');
+    }
+    const securepassword =await sercurepassword(req.body.password);
+    const update = await User.findByIdAndUpdate({_id:mail._id},{$set:{name:req.body.name,email:req.body.email,PhoneNumber:req.body.mon,image:req.body.image,password:securepassword}},{$unset:{jwtToken:''}})
+    console.log(update);
+}   
 module.exports = {
     registration,
     inserdata,
@@ -173,5 +222,8 @@ module.exports = {
     forgetpassword,
     resetlink,
     resetpassword,
-    updatepassword
+    updatepassword,
+    verificationload,
+    sendverificaionmail,
+    editload,updateuser
 }
