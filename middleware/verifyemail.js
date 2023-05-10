@@ -1,6 +1,7 @@
 console.log('this is verifyemail page');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+dotenv.config();
 const verifemail =async (name,email,id)=>{
 const transporter = nodemailer.createTransport({
     service:'gmail',
@@ -8,7 +9,7 @@ const transporter = nodemailer.createTransport({
     secure:false,
     auth:{
         user:'gursevaksinghgill21@gmail.com',
-        pass:'grlnlcnykxqdbjad'
+        pass:process.env.GMAIL_PASSWORD
     }
 })
 const mailOption ={
@@ -34,7 +35,7 @@ const sendResetEmail =async (name,email,token)=>{
         secure:false,
         auth:{
             user:'gursevaksinghgill21@gmail.com',
-            pass:'grlnlcnykxqdbjad'
+            pass:process.env.GMAIL_PASSWORD
         }
     })
     const mailOption ={
@@ -52,4 +53,28 @@ const sendResetEmail =async (name,email,token)=>{
         }
     })
     }
-module.exports = {verifemail,sendResetEmail};
+    const addnewuser = async (name,email,id,password)=>{
+        const transpoter = nodemailer.createTransport({
+            service:"gmail",
+            port:567,
+            auth:{
+                user:"gursevaksinghgill21@gmail.com",
+                pass:process.env.GMAIL_PASSWORD
+            }
+        })
+        const mailoption = {
+            from:"gursevaksinghgill21@gmail.com",
+            to:email,
+            subject:'mail verificaion',
+            html:'Hii '+ name+' please click to <a href="http://127.0.0.1:3000/verify?id='+id+'">verify</a> <br> your password is '+password+''
+        }
+        transpoter.sendMail(mailoption,(err,value)=>{
+            if(value){
+                console.log("mail send successfully")
+            }
+            else{
+                console.log("mail not send successfully");
+            }
+        })
+    }
+module.exports = {verifemail,sendResetEmail,addnewuser};

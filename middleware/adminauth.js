@@ -6,7 +6,7 @@ const islogin = async (req,res,next)=>{
         }
         next();
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 }
 const islogout = async (req,res,next)=>{
@@ -16,7 +16,7 @@ const islogout = async (req,res,next)=>{
         }
         next();
     } catch (error) {
-        console.log(error);
+        console.log("error.message");
     }
 }
 module.exports ={

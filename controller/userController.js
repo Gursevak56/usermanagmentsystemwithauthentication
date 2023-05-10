@@ -11,10 +11,10 @@ const registration = async (req,res)=>{
         console.log(error.message);
     }
 }
-const sercurepassword = async (password)=>{
+const sercurepassword = (password)=>{
     try {
-        const salt =bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password,salt);
+        const salt =  bcrypt.genSaltSync(10);
+        const hash =  bcrypt.hashSync(password,salt);
         return hash;
     } catch (error) {
         console.log(error.message);
@@ -22,7 +22,7 @@ const sercurepassword = async (password)=>{
 }
 const inserdata=async (req,res)=>{
     try {
-        const hashpassword =await sercurepassword(req.body.password);
+        const hashpassword = sercurepassword(req.body.password);
         const users =new User({
             name:req.body.name,
             email:req.body.email,
@@ -34,6 +34,7 @@ const inserdata=async (req,res)=>{
             isadmin:0
         })
         const userdata = await users.save();
+        console.log(userdata);
         if(userdata){
             sendVerifyEmail.verifemail(userdata.name,userdata.email,userdata._id);
             res.render('./../views/users/registeration.ejs',{message:'Your registeration is successfull,please verify your email'});
@@ -72,7 +73,7 @@ const loginverify =async (req,res)=>{
                 console.log('email and password are incorrect');
             }
             else{
-                const token = await jwt.sign({_id:checkemail._id},'Gursevak');
+                const token =  jwt.sign({_id:checkemail._id},'Gursevak');
                 res.header('x-access-token',token);
                 const update =await User.findByIdAndUpdate({_id:checkemail._id},{$set:{jwtToken:token}});
                 if(!update){
@@ -225,5 +226,6 @@ module.exports = {
     updatepassword,
     verificationload,
     sendverificaionmail,
-    editload,updateuser
+    editload,updateuser,
+    sercurepassword
 }
