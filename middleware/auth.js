@@ -13,12 +13,10 @@ const islogin =async (req,res,next)=>{
 }
 const islogut =(req,res,next)=>{
     try {
-        if(req.session.User_Id){
-            console.log('I am in is logout page')
-            res.redirect('/home');
-            
+        if(!req.session.User_Id){
+            next()
         }
-        next()
+        res.redirect('/home');
     } catch (error) {
         console.log(error);
     }

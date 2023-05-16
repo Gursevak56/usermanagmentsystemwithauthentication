@@ -5,6 +5,7 @@ const sendResetEmail = require("../middleware/verifyemail");
 const randomstring = require("randomstring");
 const User = require("./../models/userModel");
 const securepassword = require("./userController");
+const exceljs = require('exceljs');
 const loadlogin = async (req, res) => {
   try {
     res.render("./../views/admin/loginview.ejs");
@@ -139,6 +140,37 @@ const deleteuser = async (req,res)=>{
     res.redirect('/admin/dashboard');}
     res.redirect('/admin/dashboard');
 }
+const  exportuser = async (req,res)=>{
+try {
+    let counter =1;
+    const workbook = new exceljs.Workbook();
+    const worksheet = workbook.addWorksheet("my users");
+    worksheet.columns=[
+        {header:"S.no",key:"s_no"},
+        {header:"name",key:"name"},
+        {header:"email",key:"email"},
+        {header:"phoneNumber",key:"PhoneNumber"},
+        {header:"isadmin",key:"isadmin"},
+        {header:"isverified",key:"isverified"}
+    ]
+    const users= await User.find({isadmin:0});
+    users.forEach(user=>{
+        user.s_no=counter;
+        worksheet.addRow(user);
+        counter++;
+    })
+    worksheet.getRow(1).eachCell(cell=>{
+        cell.font={bold:true}
+    });
+    res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheatml.sheet')
+    res.setHeader('Content-Disposition',`attachment;filename=users.xlsx`)
+    return workbook.xlsx.write(res).then(()=>{
+        res.status(200);
+    })
+} catch (error) {
+    console.log(error.message);
+}
+}
 module.exports = {
   loadlogin,
   verifiylogin,
@@ -151,5 +183,6 @@ module.exports = {
   addnewuser,
   editpageload,
   edituser,
-  deleteuser
+  deleteuser,
+  exportuser
 };

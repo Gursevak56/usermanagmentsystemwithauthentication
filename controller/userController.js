@@ -62,19 +62,14 @@ const loginLoad = async (req,res)=>{
 const loginverify =async (req,res)=>{
     try {
         try {
-        console.log(req.body)
         const checkemail = await User.findOne({email:req.body.email});
-        console.log(checkemail);
-        console.log(req.body.password);
         if(checkemail){
             const checkpass = await bcrypt.compare(req.body.password,checkemail.password);
-            console.log(checkpass)
             if(!checkpass){
                 console.log('email and password are incorrect');
             }
             else{
                 const token =  jwt.sign({_id:checkemail._id},'Gursevak');
-                res.header('x-access-token',token);
                 const update =await User.findByIdAndUpdate({_id:checkemail._id},{$set:{jwtToken:token}});
                 if(!update){
                     console.log('this is error in generation token');

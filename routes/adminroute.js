@@ -27,6 +27,7 @@ route.post('/addnewuser',adminauth.islogin,upload.single('image'), admincontroll
 route.get('/edit',adminauth.islogin,admincontroller.editpageload);
 route.post('/edituser',adminauth.islogin,admincontroller.edituser)
 route.get('/delete',adminauth.islogin,admincontroller.deleteuser)
+route.get('/exportuser',adminauth.islogin,admincontroller.exportuser);
 route.all('*',(req,res)=>{ res.redirect('/admin');})
 module.exports ={
     route
