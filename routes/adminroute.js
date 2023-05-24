@@ -28,6 +28,7 @@ route.get('/edit',adminauth.islogin,admincontroller.editpageload);
 route.post('/edituser',adminauth.islogin,admincontroller.edituser)
 route.get('/delete',adminauth.islogin,admincontroller.deleteuser)
 route.get('/exportuser',adminauth.islogin,admincontroller.exportuser);
+route.get('/pdf',adminauth.islogin,admincontroller.exportuserpdf)
 route.all('*',(req,res)=>{ res.redirect('/admin');})
 module.exports ={
     route

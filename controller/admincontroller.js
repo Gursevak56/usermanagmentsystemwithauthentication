@@ -6,6 +6,11 @@ const randomstring = require("randomstring");
 const User = require("./../models/userModel");
 const securepassword = require("./userController");
 const exceljs = require('exceljs');
+const ejs = require('ejs');
+const pdf = require('html-pdf');
+const fs = require('fs');
+const path = require('path');
+const { response } = require("express");
 const loadlogin = async (req, res) => {
   try {
     res.render("./../views/admin/loginview.ejs");
@@ -171,6 +176,32 @@ try {
     console.log(error.message);
 }
 }
+const exportuserpdf = async (req,res)=>{
+const users = await User.find();
+const data = {
+  users:users
+}
+const filepathname = path.resolve(__dirname,'../views/admin/pdf.ejs');
+const htmlstring = fs.readFileSync(filepathname).toString();
+const options={
+  format:"letter"
+}
+const ejsdata = ejs.render(htmlstring,data);
+pdf.create(ejsdata,options).toFile('users.pdf',(err,response)=>{
+  if(err)console.log(err.message);
+  console.log("pdf genrated");
+ })
+ const pathname = path.resolve(__dirname,'../users.pdf');
+ fs.readFile(pathname,(err,file)=>{
+  if(err){
+    console.log(err.message);
+  }
+  res.setHeader('Content-Type','application/pdf');
+ res.setHeader('Content-Disposition','attachment;filename="users.pdf"');
+ res.send(file);
+ });
+ 
+}
 module.exports = {
   loadlogin,
   verifiylogin,
@@ -184,5 +215,6 @@ module.exports = {
   editpageload,
   edituser,
   deleteuser,
-  exportuser
+  exportuser,
+  exportuserpdf
 };
