@@ -10,19 +10,20 @@ const userSchema =new mongoose.Schema({
     },
     PhoneNumber:{
         type:String,
-        required:true
+        default:''
     },
     image:{
         type:String,
-        required:true
+        default:''
     },
     password:{
         type:String,
-        required:true
+    
     },
     isadmin:{
         type:Number,
-        required:true
+        required:true,
+        default:0
     },
     isverified:{
         type:Number,
@@ -34,6 +35,10 @@ const userSchema =new mongoose.Schema({
     },
     randomstring:{
         type:String
+    },
+    googleId:{
+        type:String,
+        required:true
     }
 })
 const User = new mongoose.model("user",userSchema);

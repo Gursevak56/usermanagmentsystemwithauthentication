@@ -4,6 +4,7 @@ const userController = require('./../controller/userController');
 const auth = require('./../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const passport = require('passport');
 
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
@@ -23,6 +24,7 @@ route.get('/login', auth.islogut, userController.loginLoad);
 route.post('/login',userController.loginverify);
 route.get('/logout',auth.islogin, userController.userlogout);
 route.get('/home',auth.islogin,userController.home);
+route.get('/otpverification',userController.otpverification)
 route.get('/empty',(req,res)=>{
     console.log('route');
 })

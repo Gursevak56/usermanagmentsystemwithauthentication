@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const session =require('express-session');
 const random =require('randomstring');
+const passport = require('passport');
+
 const registration = async (req,res)=>{
     try {
         res.render('./../views/users/registeration.ejs');
@@ -207,6 +209,33 @@ const updateuser = async (req,res)=>{
     const update = await User.findByIdAndUpdate({_id:mail._id},{$set:{name:req.body.name,email:req.body.email,PhoneNumber:req.body.mon,image:req.body.image,password:securepassword}},{$unset:{jwtToken:''}})
     console.log(update);
 }   
+const otpverification = (req,res)=>{
+    // Download the helper library from https://www.twilio.com/docs/node/install
+// Set environment variables for your credentials
+// Read more at http://twil.io/secure
+const accountSid = "AC256f83d87f342584de05f35cfa16876c";
+const authToken = "20e2ebdeb8c1c884d3032ea3da9d6f30";
+const verifySid = "VA284b84942f108a68c311350c5a4640ed";
+const client = require("twilio")(accountSid, authToken);
+
+client.verify.v2
+  .services(verifySid)
+  .verifications.create({ to: "+917037772781", channel: "sms" })
+  .then((verification) => console.log(verification.status))
+  .then(() => {
+    const readline = require("readline").createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    readline.question("Please enter the OTP:", (otpCode) => {
+      client.verify.v2
+        .services(verifySid)
+        .verificationChecks.create({ to: "+917037772781", code: otpCode })
+        .then((verification_check) => console.log(verification_check.status))
+        .then(() => readline.close());
+    });
+  });
+}
 module.exports = {
     registration,
     inserdata,
@@ -222,5 +251,7 @@ module.exports = {
     verificationload,
     sendverificaionmail,
     editload,updateuser,
-    sercurepassword
+    sercurepassword,
+    otpverification
+    
 }
