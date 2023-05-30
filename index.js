@@ -71,6 +71,6 @@ app.get('/profile',(req,res)=>{
 //admin routes
 app.use('/admin',adminroute.route);
 
-app.listen(3000,()=>{
+app.listen(process.env.PORT,()=>{
     console.log('server starts on port 3000');
 })
