@@ -25,6 +25,11 @@ const sercurepassword = (password)=>{
 const inserdata=async (req,res)=>{
     try {
         const hashpassword = sercurepassword(req.body.password);
+       const alreadyuser = await User.findOne({email:req.body.email});
+       if(alreadyuser){
+        res.redirect('http://13.233.72.26:3000/signUp');
+        return
+       }
         const users =new User({
             name:req.body.name,
             email:req.body.email,
@@ -46,7 +51,7 @@ const inserdata=async (req,res)=>{
             console.log('Data insertion error',err.message);
         }
     } catch (error) {
-        console.log('error.message');
+        console.log(error.message);
     }
 }
 const emailVerified = async (req,res)=>{
@@ -210,11 +215,11 @@ const updateuser = async (req,res)=>{
     console.log(update);
 }   
 const otpverification = (req,res)=>{
-    // Download the helper library from https://www.twilio.com/docs/node/install
+   // Download the helper library from https://www.twilio.com/docs/node/install
 // Set environment variables for your credentials
 // Read more at http://twil.io/secure
 const accountSid = "AC256f83d87f342584de05f35cfa16876c";
-const authToken = "20e2ebdeb8c1c884d3032ea3da9d6f30";
+const authToken = "16e1b0735b9ea6d3c56e8e208ef21074";
 const verifySid = "VA284b84942f108a68c311350c5a4640ed";
 const client = require("twilio")(accountSid, authToken);
 

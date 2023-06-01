@@ -7,7 +7,7 @@ const { islogin } = require('../middleware/auth.js');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
-        cb(null,path.join(__dirname,'/../public/userimage'));
+        cb(null,path.join(__dirname,'/../public/userImage'));
     },
     filename:function(req,file,cb){
         cb(null,Date.now()+''+file.originalname);

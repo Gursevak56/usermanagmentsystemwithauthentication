@@ -37,8 +37,7 @@ const userSchema =new mongoose.Schema({
         type:String
     },
     googleId:{
-        type:String,
-        required:true
+        type:String
     }
 })
 const User = new mongoose.model("user",userSchema);

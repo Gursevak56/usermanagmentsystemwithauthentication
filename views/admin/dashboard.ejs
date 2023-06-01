@@ -1,8 +1,8 @@
 <% include('./../layout/header.ejs') %>
 <h1>Dashboard</h1>
-<a href="/admin/newuser">Add new user</a>
-<a href="/admin/exportuser">exportuser</a>
-<a href="/admin/pdf">pdfdownload</a>
+<a href="http://13.233.72.26:3000/admin/newuser">Add new user</a>
+<a href="http://13.233.72.26:3000/admin/exportuser">exportuser</a>
+<a href="http://13.233.72.26:3000/admin/pdf">pdfdownload</a>
 <table width="80%">
     <tr>
         <th>Name</th>
@@ -19,7 +19,7 @@
             <td><%= users[index].name%></td>
             <td><%= users[index].email%></td>
             <td><%= users[index].PhoneNumber%></td>
-            <td><img src="userimage/<%= users.image%>" alt="" width="150px"></td>
+            <td><img src="userimage/<%= users[index].image%>" alt="" width="150px"></td>
             <td><% if (users[index].isverified===1) {
                 %> Verified<%
             } else {

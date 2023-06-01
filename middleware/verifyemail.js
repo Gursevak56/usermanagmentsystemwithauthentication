@@ -16,7 +16,7 @@ const mailOption ={
     from:'gursevaksinghgill21@gmail.com',
     to:email,
     subject:'email verification',
-    html:'<p> hii '+name+' click on <a href ="http://127.0.0.1:3000/verify?id='+id+'">Verify</a></p>'
+    html:'<p> hii '+name+' click on <a href ="http://13.233.72.26:3000/verify?id='+id+'">Verify</a></p>'
 }
 transporter.sendMail(mailOption,(error,value)=>{
     if(error){
