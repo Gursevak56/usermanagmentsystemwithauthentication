@@ -48,9 +48,8 @@ passport.use(
       const user = new User({
         googleId: profile.id,
         name: profile.displayName,
-        email: profile.emails[0].value,
-        image: profile.photos[0].value,
-        PhoneNumber: profile.PhoneNumber,
+        email: profile.emails[0].value
+       
       });
      user.save().then(() => {
           console.log("user sign in with google successfully");
@@ -68,7 +67,7 @@ passport.deserializeUser((user, done) => {
 });
 //user routes
 app.get(
-  "/auth/google",passport.authenticate("google", { scope: ["profile", "email", "phone"] })
+  "/auth/google",passport.authenticate("google", { scope: ["profile", "email"] })
 );
 app.get(
   "/callback",
