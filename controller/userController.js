@@ -121,7 +121,7 @@ const home =async (req,res)=>
     res.render('./../views/users/home.ejs',{user:userdata});
 }
 const forgetpassword = async (req,res)=>{
-    res.render('./../views/users/forget.ejs');
+    res.render('./views/users/forget.ejs');
 }
 const resetlink = async (req,res)=>{
     try {
