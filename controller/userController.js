@@ -95,7 +95,7 @@ const loginverify =async (req,res)=>{
             }
         }
         else{
-            console.error('error');
+            console.error("erro");
         }
         } catch (error) {
            console.log(error) ;

@@ -21,7 +21,6 @@ const loadlogin = async (req, res) => {
 const verifiylogin = async (req, res) => {
   try {
     const admindata = await Admin.findOne({ email: req.body.email });
-    console.log(admindata);
     if (!admindata) {
       console.log("invaild email or password");
     }
