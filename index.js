@@ -32,8 +32,7 @@ mongoose
       console.log("database connected successfully");
     }
   });
-passport.use(
-  new GoogleStrategy(
+passport.use(new GoogleStrategy(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
