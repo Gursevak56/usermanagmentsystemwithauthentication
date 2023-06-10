@@ -15,6 +15,9 @@ app.use(
     secret: "Gursevaksingh",
     saveUninitialized: false,
     resave: false,
+    cookie:{
+      maxAge:60*1000
+    }
   })
 );
 const bodyparser = require("body-parser");
