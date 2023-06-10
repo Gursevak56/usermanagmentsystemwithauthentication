@@ -103,7 +103,7 @@ const addnewuser = async (req, res) => {
           user._id,
           user.password
         );
-        res.redirect("http://13.233.72.26:3000/admin/dashboard");
+        res.redirect("/admin/dashboard");
         console.log("user add successfully");
       }
     });
