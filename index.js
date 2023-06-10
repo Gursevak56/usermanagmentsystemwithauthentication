@@ -4,7 +4,7 @@ const userroute = require("./routes/userroute");
 const adminroute = require("./routes/adminroute");
 const session = require("express-session");
 const passport = require("passport");
-const dotenv = require("dotenv").config({ path: ".env.production" });
+const dotenv = require("dotenv").config();
 const User = require("./models/userModel");
 const app = express();
 app.set("view engine", "ejs");
@@ -37,7 +37,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://13.233.72.26:3000/auth/google/callback",
+      callbackURL: "http://localhost:3000/callback",
     },
     (accessToken, refreshtoken, profile, done) => {
       User.findOne({ googleId: profile.id }).then((alluser) => {
@@ -52,12 +52,9 @@ passport.use(
         image: profile.photos[0].value,
         PhoneNumber: profile.PhoneNumber,
       });
-      const userdata = user
-        .save()
-        .then(() => {
+     user.save().then(() => {
           console.log("user sign in with google successfully");
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.log(err.message);
         });
     }
@@ -71,11 +68,10 @@ passport.deserializeUser((user, done) => {
 });
 //user routes
 app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email", "phone"] })
+  "/auth/google",passport.authenticate("google", { scope: ["profile", "email", "phone"] })
 );
 app.get(
-  "/auth/google/callback",
+  "/callback",
   passport.authenticate("google", {
     successRedirect: "/profile",
     failureRedirect: "/signup",
@@ -92,12 +88,8 @@ app.get("/profile", (req, res) => {
 //admin routes
 app.use("/admin", adminroute.route);
 
-<<<<<<< HEAD
 app.listen(process.env.PORT, () => {
   console.log("server starts on port 3000");
 });
-=======
-app.listen(process.env.PORT,()=>{
-    console.log('server starts on port 3000');
-})
->>>>>>> dbf5bc8991f86b9e608f516de6d640dd53726dc4
+
+
