@@ -7,7 +7,8 @@ const passport = require("passport");
 const dotenv = require("dotenv").config();
 const User = require("./models/userModel");
 const app = express();
-app.set("view engine", "ejs");
+app.set('view engine','ejs')
+app.set('views','./views')
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 app.use(express.static("public"));
 app.use(
