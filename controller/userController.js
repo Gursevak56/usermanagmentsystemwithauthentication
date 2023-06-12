@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const registration = async (req,res)=>{
     try {
-        res.render('./views/users/registeration.ejs');
+        res.render('./users/registeration');
     } catch (error) {
         console.log(error.message);
     }
