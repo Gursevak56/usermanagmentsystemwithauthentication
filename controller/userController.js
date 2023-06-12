@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const registration = async (req,res)=>{
     try {
-        res.render('registeration');
+        res.render('./views/users/registeration.ejs');
     } catch (error) {
         console.log(error.message);
     }
@@ -27,7 +27,7 @@ const inserdata=async (req,res)=>{
         const hashpassword = sercurepassword(req.body.password);
        const alreadyuser = await User.findOne({email:req.body.email});
        if(alreadyuser){
-        res.redirect('http://13.233.72.26:3000/signUp');
+        res.redirect('/signUp');
         return
        }
         const users =new User({
