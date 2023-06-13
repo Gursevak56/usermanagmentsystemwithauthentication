@@ -5,10 +5,12 @@ const adminroute = require("./routes/adminroute");
 const session = require("express-session");
 const passport = require("passport");
 const dotenv = require("dotenv").config();
+const path = require('path')
 const User = require("./models/userModel");
 const app = express();
 app.set('view engine','ejs')
-app.set('views','./views')
+app.set('views', path.join(__dirname, 'views'));
+
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 app.use(express.static("public"));
 app.use(

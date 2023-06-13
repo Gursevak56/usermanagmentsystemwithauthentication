@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const registration = async (req,res)=>{
     try {
-        res.render('./users/registeration');
+        res.render('users/registeration');
     } catch (error) {
         console.log(error.message);
     }
@@ -44,7 +44,7 @@ const inserdata=async (req,res)=>{
         console.log(userdata);
         if(userdata){
             sendVerifyEmail.verifemail(userdata.name,userdata.email,userdata._id);
-            res.render('./../views/users/registeration.ejs',{message:'Your registeration is successfull,please verify your email'});
+            res.render('./users/registeration.ejs',{message:'Your registeration is successfull,please verify your email'});
            
         }
         else{
@@ -64,7 +64,7 @@ const emailVerified = async (req,res)=>{
     }
 }
 const loginLoad = async (req,res)=>{
-    res.render('./../views/users/login.ejs');
+    res.render('./users/login.ejs');
 }
 const loginverify =async (req,res)=>{
     try {
@@ -107,10 +107,10 @@ const loginverify =async (req,res)=>{
 }
 const userlogout = async (req,res)=>{
 try {
-req.session.destroy();
+// req.session.destroy();
 res.redirect('/signup');
 } catch (error) {
-    console.log(error);
+    console.log(error.message);
 }
 }
 const home =async (req,res)=>
@@ -118,10 +118,10 @@ const home =async (req,res)=>
     const user_id =req.session.User_Id;
         const userdata = await User.findOne({_id:user_id});
     console.log(userdata)
-    res.render('./../views/users/home.ejs',{user:userdata});
+    res.render('./users/home.ejs',{user:userdata});
 }
 const forgetpassword = async (req,res)=>{
-    res.render('./views/users/forget.ejs');
+    res.render('./users/forget.ejs');
 }
 const resetlink = async (req,res)=>{
     try {
@@ -146,7 +146,7 @@ const resetpassword = async (req,res)=>{
     try {
         const token = await User.findOne({randomstring:req.query.token});
         if(token){
-            res.render('./../views/users/resetpassword.ejs',{user_id:token._id});
+            res.render('./users/resetpassword.ejs',{user_id:token._id});
         }
         
     } catch (error) {
@@ -168,7 +168,7 @@ const updatepassword=async (req,res)=>{
     }
 }
 const verificationload = async (req,res)=>{
-    res.render('./../views/users/verification.ejs');
+    res.render('./users/verification.ejs');
 }
 const sendverificaionmail = async (req,res)=>{
     try {
@@ -194,7 +194,7 @@ const editload =async (req,res)=>{
         }
         const tokenid = req.session.User_Id;
         const tokendata = await User.findOne({_id:tokenid});
-        res.render('./../views/users/edituser.ejs',{token:tokendata.jwtToken});
+        res.render('./users/edituser.ejs',{token:tokendata.jwtToken});
     } catch (error) {
         
     }
